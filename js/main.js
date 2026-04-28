@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Initialize Application
 function initializeApp() {
     // Set initial theme
-    setTheme(currentTheme);
+    initTheme(); // Use initTheme instead of setTheme
     
     // Initialize components
     initializeNavigation();
@@ -1466,35 +1466,34 @@ function generateSmartRecommendation(results, amount) {
 
 // Update UI with transaction results
 function updateTransactionResults(amount, results, recommendation) {
+    // Show results section
+    const resultsSection = document.getElementById('comparisonResultsSection');
+    if (resultsSection) {
+        resultsSection.style.display = 'block';
+    }
+    
     // Update transaction amount display
     const amountDisplay = document.getElementById('transactionAmountDisplay');
     if (amountDisplay) {
         amountDisplay.textContent = `₹${amount.toLocaleString('en-IN')}`;
     }
     
-    // Update recommendation section with enhanced UI
-    if (recommendation) {
-        const methodElement = document.getElementById('recommendedMethod');
-        const reasonElement = document.getElementById('recommendedReason');
-        const savingsElement = document.getElementById('recommendedSavings');
-        const scoreElement = document.getElementById('recommendedScore');
-        
-        if (methodElement) {
-            methodElement.innerHTML = `<strong>${recommendation.method.name}</strong>`;
-        }
-        if (reasonElement) {
-            reasonElement.innerHTML = recommendation.reasons.map(r => `<span class="reason-tag">${r}</span>`).join('');
-        }
-        if (savingsElement) {
-            savingsElement.innerHTML = `<i class="fas fa-piggy-bank"></i> You save ₹${recommendation.savings.toFixed(2)} compared to other methods`;
-        }
-        if (scoreElement) {
-            scoreElement.innerHTML = `<div class="score-circle">${recommendation.score}</div><div class="score-label">/100</div>`;
-        }
+    // Update table
+    updateDynamicComparisonTable(results);
+    
+    // Hide loading state
+    const loadingState = document.getElementById('loadingState');
+    if (loadingState) {
+        loadingState.style.display = 'none';
     }
     
-    // Update dynamic comparison table
-    updateDynamicComparisonTable(results);
+    // Update charts
+    updateTransactionCharts(results, recommendation);
+    
+    // Show recommendation
+    if (recommendation) {
+        showRecommendation(recommendation);
+    }
 }
 
 // Update dynamic comparison table
@@ -1583,28 +1582,247 @@ function createDynamicTableRow(result, index) {
 
 // Show transaction results sections
 function showTransactionResults() {
+    // Show recommendation section first
     const recommendationSection = document.getElementById('recommendationSection');
-    const smartFiltersSection = document.getElementById('smartFiltersSection');
-    const comparisonResultsSection = document.getElementById('comparisonResultsSection');
-    
     if (recommendationSection) {
         recommendationSection.style.display = 'block';
         recommendationSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     
+    // Show smart filters
+    const smartFiltersSection = document.getElementById('smartFiltersSection');
     if (smartFiltersSection) {
         smartFiltersSection.style.display = 'block';
     }
     
+    // Show comparison table
+    const comparisonResultsSection = document.getElementById('comparisonResultsSection');
     if (comparisonResultsSection) {
         comparisonResultsSection.style.display = 'block';
     }
     
-    // Show charts section after comparison table
+    // Show charts section after table
     const chartsSection = document.getElementById('chartsSection');
     if (chartsSection) {
         chartsSection.style.display = 'block';
     }
+}
+
+// Show recommendation details at top
+function showRecommendation(recommendation) {
+    if (!recommendation) return;
+    
+    // Update recommendation section
+    const methodElement = document.getElementById('recommendedMethod');
+    const reasonElement = document.getElementById('recommendedReason');
+    const savingsElement = document.getElementById('recommendedSavings');
+    const scoreElement = document.getElementById('recommendedScore');
+    
+    if (methodElement) {
+        methodElement.textContent = recommendation.method.name;
+    }
+    if (reasonElement) {
+        reasonElement.innerHTML = recommendation.reasons.map(r => `<span class="reason-tag">${r}</span>`).join('');
+    }
+    if (savingsElement) {
+        savingsElement.innerHTML = `<i class="fas fa-piggy-bank"></i> You save ₹${recommendation.savings.toFixed(2)} compared to other methods`;
+    }
+    if (scoreElement) {
+        scoreElement.innerHTML = `<div class="score-circle">${recommendation.score}</div><div class="score-label">/100</div>`;
+    }
+}
+
+// Update transaction charts
+function updateTransactionCharts(results, recommendation) {
+    // Show charts section
+    const chartsSection = document.getElementById('chartsSection');
+    if (chartsSection) {
+        chartsSection.style.display = 'block';
+    }
+    
+    // Update radar chart
+    updateRadarChart(results);
+    
+    // Update fee comparison chart
+    updateFeeComparisonChart(results, currentTransactionAmount);
+    
+    // Update final amount chart
+    updateFinalAmountChart(results, currentTransactionAmount);
+    
+    // Update speed comparison chart
+    updateSpeedComparisonChart(results);
+    
+    // Update availability chart
+    updateAvailabilityChart(results);
+    
+    // Update score radar chart
+    updateScoreRadarChart(results);
+    
+    // Update charge percentage chart
+    updateChargePercentageChart(results, currentTransactionAmount);
+}
+
+// Update final amount chart
+function updateFinalAmountChart(results, amount) {
+    const ctx = document.getElementById('finalAmountChart');
+    if (!ctx) return;
+    
+    const labels = results.map(r => r.name);
+    const finalAmounts = results.map(r => r.finalAmount);
+    
+    // Find recommended index for highlighting
+    const recommendedIndex = currentRecommendation ? 
+        results.findIndex(r => r.id === currentRecommendation.method.id) : -1;
+    
+    // Destroy existing chart
+    if (comparisonCharts.finalAmount) {
+        comparisonCharts.finalAmount.destroy();
+        comparisonCharts.finalAmount = null;
+    }
+    
+    comparisonCharts.finalAmount = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Final Amount Payable (₹)',
+                data: finalAmounts,
+                backgroundColor: finalAmounts.map((f, i) => 
+                    i === recommendedIndex ? 'rgba(16, 185, 129, 0.8)' : 'rgba(245, 158, 11, 0.6)'
+                ),
+                borderColor: finalAmounts.map((f, i) => 
+                    i === recommendedIndex ? 'rgba(16, 185, 129, 1)' : 'rgba(245, 158, 11, 1)'
+                ),
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Final Amount Payable' }
+            },
+            scales: {
+                y: { 
+                    beginAtZero: false,
+                    ticks: {
+                        callback: function(value) {
+                            return '₹' + value.toFixed(0);
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Update speed comparison chart
+function updateSpeedComparisonChart(results) {
+    const ctx = document.getElementById('speedComparisonChart');
+    if (!ctx) return;
+    
+    const labels = results.map(r => r.name);
+    const speeds = results.map(r => r.speed_value);
+    
+    // Find recommended index for highlighting
+    const recommendedIndex = currentRecommendation ? 
+        results.findIndex(r => r.id === currentRecommendation.method.id) : -1;
+    
+    // Destroy existing chart
+    if (comparisonCharts.speed) {
+        comparisonCharts.speed.destroy();
+        comparisonCharts.speed = null;
+    }
+    
+    comparisonCharts.speed = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Speed (seconds)',
+                data: speeds,
+                backgroundColor: speeds.map((s, i) => 
+                    i === recommendedIndex ? 'rgba(16, 185, 129, 0.8)' : 'rgba(79, 70, 229, 0.6)'
+                ),
+                borderColor: speeds.map((s, i) => 
+                    i === recommendedIndex ? 'rgba(16, 185, 129, 1)' : 'rgba(79, 70, 229, 1)'
+                ),
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Transaction Speed (lower is better)' }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+// Update radar chart for comparison page
+function updateRadarChart(results) {
+    const ctx = document.getElementById('radarChart');
+    if (!ctx) return;
+    
+    const labels = results.map(r => r.name);
+    const datasets = [
+        {
+            label: 'Fee Score',
+            data: results.map(r => Math.max(0, 100 - (r.chargeAmount / currentTransactionAmount) * 100)),
+            backgroundColor: 'rgba(79, 70, 229, 0.2)',
+            borderColor: 'rgba(79, 70, 229, 1)',
+            borderWidth: 2
+        },
+        {
+            label: 'Speed Score',
+            data: results.map(r => r.transaction_speed === 'instant' ? 100 : Math.max(0, 100 - r.speed_value / 10)),
+            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+            borderColor: 'rgba(16, 185, 129, 1)',
+            borderWidth: 2
+        },
+        {
+            label: 'Availability',
+            data: results.map(r => r.availability_percentage),
+            backgroundColor: 'rgba(245, 158, 11, 0.2)',
+            borderColor: 'rgba(245, 158, 11, 1)',
+            borderWidth: 2
+        }
+    ];
+    
+    // Destroy existing chart
+    if (comparisonCharts.radar) {
+        comparisonCharts.radar.destroy();
+        comparisonCharts.radar = null;
+    }
+    
+    comparisonCharts.radar = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            },
+            scales: {
+                r: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
 }
 
 // Apply smart filter with advanced scoring

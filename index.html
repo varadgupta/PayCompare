@@ -379,6 +379,15 @@
     <!-- JavaScript -->
     <script src="js/main.js"></script>
     
+    <!-- Initialize theme on page load -->
+    <script>
+        // Initialize theme immediately before DOM loads
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    
     <!-- Add some CSS for the new elements -->
     <style>
         .social-links a {
