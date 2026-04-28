@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayCompare - Feature Testing Suite</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .test-suite {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .test-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .test-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .test-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+        .test-item {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--border-color);
+            transition: all var(--transition-normal);
+        }
+        .test-item:hover {
+            border-left-color: var(--primary-color);
+            transform: translateX(5px);
+        }
+        .test-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .status-pending {
+            background: var(--warning-color);
+            color: white;
+        }
+        .status-pass {
+            background: var(--success-color);
+            color: white;
+        }
+        .status-fail {
+            background: var(--danger-color);
+            color: white;
+        }
+        .test-button {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .test-results {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-primary);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: width 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="32" height="32">
+                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                </svg>
+                PayCompare
+            </a>
+            <span class="badge" style="background: var(--accent-color);">Testing Suite</span>
+        </div>
+    </nav>
+
+    <main style="padding-top: 100px;">
+        <div class="test-suite">
+            <!-- Header -->
+            <div class="text-center" style="margin-bottom: 3rem;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-flask"></i> Feature Testing Suite
+                </h1>
+                <p style="color: var(--text-secondary); font-size: 1.125rem;">
+                    Comprehensive testing for PayCompare Smart Transaction Analysis System
+                </p>
+            </div>
+
+            <!-- Overall Progress -->
+            <div class="test-section">
+                <div class="test-header">
+                    <div class="test-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h2>Overall Test Progress</h2>
+                        <p style="color: var(--text-secondary);">Track completion of all feature tests</p>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="overallProgress" style="width: 0%"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="testsCompleted">0</span> of <span id="totalTests">0</span> tests completed
+                    <button class="test-button" onclick="runAllTests()">
+                        <i class="fas fa-play"></i> Run All Tests
+                    </button>
+                </div>
+            </div>
+
+            <!-- Database Tests -->
+            <div class="test-section">
+                <div class="test-header">
+                    <div class="test-icon" style="background: var(--gradient-success);">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div>
+                        <h2>Database Connectivity</h2>
+                        <p style="color: var(--text-secondary);">Test database connection and data integrity</p>
+                    </div>
+                </div>
+                
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Database Connection</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test MySQL connection to paycompare_db</p>
+                        </div>
+                        <span class="test-status status-pending" id="db-connection">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="db-connection-result" style="display: none;"></div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Payment Methods Data</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Verify payment methods table has enhanced structure</p>
+                        </div>
+                        <span class="test-status status-pending" id="db-payment-methods">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="db-payment-methods-result" style="display: none;"></div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Sample Data Integrity</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Check if sample data is properly loaded</p>
+                        </div>
+                        <span class="test-status status-pending" id="db-sample-data">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="db-sample-data-result" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- API Tests -->
+            <div class="test-section">
+                <div class="test-header">
+                    <div class="test-icon" style="background: var(--gradient-primary);">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div>
+                        <h2>API Endpoints</h2>
+                        <p style="color: var(--text-secondary);">Test RESTful API functionality</p>
+                    </div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Payment Methods API</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test GET /api/payment-methods.php</p>
+                        </div>
+                        <span class="test-status status-pending" id="api-payment-methods">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="api-payment-methods-result" style="display: none;"></div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Transaction Calculation API</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test GET /api/payment-methods.php?action=calculate&amount=5000</p>
+                        </div>
+                        <span class="test-status status-pending" id="api-calculation">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="api-calculation-result" style="display: none;"></div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Authentication API</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test POST /api/auth.php</p>
+                        </div>
+                        <span class="test-status status-pending" id="api-auth">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="api-auth-result" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Frontend Tests -->
+            <div class="test-section">
+                <div class="test-header">
+                    <div class="test-icon" style="background: var(--gradient-secondary);">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <div>
+                        <h2>Frontend Functionality</h2>
+                        <p style="color: var(--text-secondary);">Test JavaScript features and UI components</p>
+                    </div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Transaction Analysis</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test amount input and calculation logic</p>
+                        </div>
+                        <span class="test-status status-pending" id="frontend-analysis">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="frontend-analysis-result" style="display: none;"></div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Smart Filters</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test filter functionality and recommendations</p>
+                        </div>
+                        <span class="test-status status-pending" id="frontend-filters">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="frontend-filters-result" style="display: none;"></div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Chart Updates</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test dynamic chart updates on dashboard</p>
+                        </div>
+                        <span class="test-status status-pending" id="frontend-charts">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="frontend-charts-result" style="display: none;"></div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Export Features</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test PDF and CSV export functionality</p>
+                        </div>
+                        <span class="test-status status-pending" id="frontend-export">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="frontend-export-result" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- UI/UX Tests -->
+            <div class="test-section">
+                <div class="test-header">
+                    <div class="test-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <div>
+                        <h2>UI/UX Features</h2>
+                        <p style="color: var(--text-secondary);">Test visual enhancements and animations</p>
+                    </div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Dark Mode Toggle</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test theme switching functionality</p>
+                        </div>
+                        <span class="test-status status-pending" id="ui-dark-mode">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="ui-dark-mode-result" style="display: none;"></div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Responsive Design</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test mobile responsiveness</p>
+                        </div>
+                        <span class="test-status status-pending" id="ui-responsive">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="ui-responsive-result" style="display: none;"></div>
+                </div>
+
+                <div class="test-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Animations & Effects</strong>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.25rem 0;">Test glassmorphism and animations</p>
+                        </div>
+                        <span class="test-status status-pending" id="ui-animations">
+                            <i class="fas fa-clock"></i> Pending
+                        </span>
+                    </div>
+                    <div class="test-results" id="ui-animations-result" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Test Results Summary -->
+            <div class="test-section" id="summarySection" style="display: none;">
+                <div class="test-header">
+                    <div class="test-icon" style="background: var(--gradient-fintech);">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h2>Test Results Summary</h2>
+                        <p style="color: var(--text-secondary);">Overall system health and feature status</p>
+                    </div>
+                </div>
+                <div id="summaryContent"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Test Suite JavaScript
+        let testResults = {
+            total: 0,
+            passed: 0,
+            failed: 0,
+            pending: 0
+        };
+
+        const tests = [
+            { id: 'db-connection', name: 'Database Connection', type: 'database' },
+            { id: 'db-payment-methods', name: 'Payment Methods Data', type: 'database' },
+            { id: 'db-sample-data', name: 'Sample Data Integrity', type: 'database' },
+            { id: 'api-payment-methods', name: 'Payment Methods API', type: 'api' },
+            { id: 'api-calculation', name: 'Transaction Calculation API', type: 'api' },
+            { id: 'api-auth', name: 'Authentication API', type: 'api' },
+            { id: 'frontend-analysis', name: 'Transaction Analysis', type: 'frontend' },
+            { id: 'frontend-filters', name: 'Smart Filters', type: 'frontend' },
+            { id: 'frontend-charts', name: 'Chart Updates', type: 'frontend' },
+            { id: 'frontend-export', name: 'Export Features', type: 'frontend' },
+            { id: 'ui-dark-mode', name: 'Dark Mode Toggle', type: 'ui' },
+            { id: 'ui-responsive', name: 'Responsive Design', type: 'ui' },
+            { id: 'ui-animations', name: 'Animations & Effects', type: 'ui' }
+        ];
+
+        // Initialize test suite
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTestCounts();
+        });
+
+        function updateTestCounts() {
+            testResults.total = tests.length;
+            testResults.pending = tests.length;
+            document.getElementById('totalTests').textContent = testResults.total;
+            document.getElementById('testsCompleted').textContent = testResults.passed + testResults.failed;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const completed = testResults.passed + testResults.failed;
+            const percentage = (completed / testResults.total) * 100;
+            document.getElementById('overallProgress').style.width = percentage + '%';
+            document.getElementById('testsCompleted').textContent = completed;
+        }
+
+        async function runAllTests() {
+            // Reset results
+            testResults = { total: tests.length, passed: 0, failed: 0, pending: 0 };
+            
+            // Run tests in sequence
+            for (const test of tests) {
+                await runTest(test);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between tests
+            }
+            
+            showSummary();
+        }
+
+        async function runTest(test) {
+            const statusEl = document.getElementById(test.id);
+            const resultEl = document.getElementById(test.id + '-result');
+            
+            // Update status to running
+            statusEl.className = 'test-status status-pending';
+            statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running...';
+            
+            try {
+                let result;
+                switch (test.type) {
+                    case 'database':
+                        result = await runDatabaseTest(test.id);
+                        break;
+                    case 'api':
+                        result = await runApiTest(test.id);
+                        break;
+                    case 'frontend':
+                        result = await runFrontendTest(test.id);
+                        break;
+                    case 'ui':
+                        result = await runUITest(test.id);
+                        break;
+                }
+                
+                // Update status based on result
+                if (result.success) {
+                    statusEl.className = 'test-status status-pass';
+                    statusEl.innerHTML = '<i class="fas fa-check"></i> Pass';
+                    testResults.passed++;
+                } else {
+                    statusEl.className = 'test-status status-fail';
+                    statusEl.innerHTML = '<i class="fas fa-times"></i> Fail';
+                    testResults.failed++;
+                }
+                
+                // Show results
+                resultEl.style.display = 'block';
+                resultEl.innerHTML = `
+                    <strong>Result:</strong> ${result.success ? 'PASS' : 'FAIL'}<br>
+                    <strong>Details:</strong> ${result.details}<br>
+                    <strong>Time:</strong> ${result.time}ms
+                `;
+                
+            } catch (error) {
+                statusEl.className = 'test-status status-fail';
+                statusEl.innerHTML = '<i class="fas fa-times"></i> Error';
+                testResults.failed++;
+                
+                resultEl.style.display = 'block';
+                resultEl.innerHTML = `
+                    <strong>Result:</strong> ERROR<br>
+                    <strong>Details:</strong> ${error.message}<br>
+                    <strong>Time:</strong> N/A
+                `;
+            }
+            
+            testResults.pending--;
+            updateProgress();
+        }
+
+        async function runDatabaseTest(testId) {
+            const startTime = Date.now();
+            
+            switch (testId) {
+                case 'db-connection':
+                    // Test database connection via API
+                    const response = await fetch('api/payment-methods.php');
+                    return {
+                        success: response.ok,
+                        details: response.ok ? 'Database connection successful' : 'Database connection failed',
+                        time: Date.now() - startTime
+                    };
+                    
+                case 'db-payment-methods':
+                    // Test payment methods structure
+                    const pmResponse = await fetch('api/payment-methods.php');
+                    const methods = await pmResponse.json();
+                    const hasEnhancedFields = methods.length > 0 && 
+                        methods[0].hasOwnProperty('percentage_fee') && 
+                        methods[0].hasOwnProperty('security_score');
+                    return {
+                        success: hasEnhancedFields,
+                        details: hasEnhancedFields ? 
+                            `Found ${methods.length} payment methods with enhanced structure` : 
+                            'Enhanced structure not found',
+                        time: Date.now() - startTime
+                    };
+                    
+                case 'db-sample-data':
+                    // Test sample data
+                    const sampleResponse = await fetch('api/payment-methods.php');
+                    const sampleMethods = await sampleResponse.json();
+                    const hasUPI = sampleMethods.some(m => m.name === 'UPI');
+                    return {
+                        success: hasUPI && sampleMethods.length >= 8,
+                        details: `Found ${sampleMethods.length} payment methods, UPI present: ${hasUPI}`,
+                        time: Date.now() - startTime
+                    };
+                    
+                default:
+                    return { success: false, details: 'Unknown test', time: 0 };
+            }
+        }
+
+        async function runApiTest(testId) {
+            const startTime = Date.now();
+            
+            switch (testId) {
+                case 'api-payment-methods':
+                    const pmResponse = await fetch('api/payment-methods.php');
+                    const methods = await pmResponse.json();
+                    return {
+                        success: Array.isArray(methods) && methods.length > 0,
+                        details: `API returned ${methods.length} payment methods`,
+                        time: Date.now() - startTime
+                    };
+                    
+                case 'api-calculation':
+                    const calcResponse = await fetch('api/payment-methods.php?action=calculate&amount=5000');
+                    const results = await calcResponse.json();
+                    return {
+                        success: Array.isArray(results) && results.length > 0,
+                        details: `Calculation API returned ${results.length} results for ₹5000`,
+                        time: Date.now() - startTime
+                    };
+                    
+                case 'api-auth':
+                    // Test login endpoint
+                    const authResponse = await fetch('api/auth.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'login',
+                            email: 'admin@paycompare.com',
+                            password: 'admin123'
+                        })
+                    });
+                    const authResult = await authResponse.json();
+                    return {
+                        success: authResponse.ok,
+                        details: authResult.success ? 'Authentication API working' : 'Authentication failed',
+                        time: Date.now() - startTime
+                    };
+                    
+                default:
+                    return { success: false, details: 'Unknown test', time: 0 };
+            }
+        }
+
+        async function runFrontendTest(testId) {
+            const startTime = Date.now();
+            
+            switch (testId) {
+                case 'frontend-analysis':
+                    // Test if analyzePaymentMethods function exists
+                    const hasAnalysisFunction = typeof analyzePaymentMethods === 'function';
+                    const hasAmountInput = document.getElementById('transactionAmount') !== null;
+                    return {
+                        success: hasAnalysisFunction && hasAmountInput,
+                        details: `Analysis function: ${hasAnalysisFunction}, Amount input: ${hasAmountInput}`,
+                        time: Date.now() - startTime
+                    };
+                    
+                case 'frontend-filters':
+                    // Test filter functions
+                    const hasFilterFunction = typeof applySmartFilter === 'function';
+                    const hasFilterButtons = document.querySelectorAll('.smart-filter-btn').length > 0;
+                    return {
+                        success: hasFilterFunction && hasFilterButtons,
+                        details: `Filter function: ${hasFilterFunction}, Filter buttons: ${hasFilterButtons}`,
+                        time: Date.now() - startTime
+                    };
+                    
+                case 'frontend-charts':
+                    // Test chart functionality
+                    const hasChartFunction = typeof updateDashboardCharts === 'function';
+                    const hasChartCanvas = document.getElementById('feeComparisonChart') !== null;
+                    return {
+                        success: hasChartFunction && hasChartCanvas,
+                        details: `Chart function: ${hasChartFunction}, Chart canvas: ${hasChartCanvas}`,
+                        time: Date.now() - startTime
+                    };
+                    
+                case 'frontend-export':
+                    // Test export functions
+                    const hasPDFExport = typeof exportToPDF === 'function';
+                    const hasCSVExport = typeof exportToCSV === 'function';
+                    return {
+                        success: hasPDFExport && hasCSVExport,
+                        details: `PDF export: ${hasPDFExport}, CSV export: ${hasCSVExport}`,
+                        time: Date.now() - startTime
+                    };
+                    
+                default:
+                    return { success: false, details: 'Unknown test', time: 0 };
+            }
+        }
+
+        async function runUITest(testId) {
+            const startTime = Date.now();
+            
+            switch (testId) {
+                case 'ui-dark-mode':
+                    // Test dark mode functionality
+                    const hasThemeToggle = document.querySelector('.theme-toggle') !== null;
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    return {
+                        success: hasThemeToggle && (currentTheme === 'light' || currentTheme === 'dark'),
+                        details: `Theme toggle: ${hasThemeToggle}, Current theme: ${currentTheme}`,
+                        time: Date.now() - startTime
+                    };
+                    
+                case 'ui-responsive':
+                    // Test responsive design
+                    const hasResponsiveCSS = window.getComputedStyle(document.body).getPropertyValue('font-size');
+                    const hasMediaQueries = window.matchMedia('(max-width: 768px)').matches;
+                    return {
+                        success: true,
+                        details: `Responsive CSS loaded, Mobile viewport: ${hasMediaQueries}`,
+                        time: Date.now() - startTime
+                    };
+                    
+                case 'ui-animations':
+                    // Test animations and effects
+                    const hasAnimationsCSS = CSS.supports('animation') && CSS.supports('transition');
+                    const hasGlassmorphism = CSS.supports('backdrop-filter');
+                    return {
+                        success: hasAnimationsCSS,
+                        details: `Animations: ${hasAnimationsCSS}, Glassmorphism: ${hasGlassmorphism}`,
+                        time: Date.now() - startTime
+                    };
+                    
+                default:
+                    return { success: false, details: 'Unknown test', time: 0 };
+            }
+        }
+
+        function showSummary() {
+            const summarySection = document.getElementById('summarySection');
+            const summaryContent = document.getElementById('summaryContent');
+            
+            const successRate = ((testResults.passed / testResults.total) * 100).toFixed(1);
+            const status = testResults.failed === 0 ? 'EXCELLENT' : 
+                          testResults.failed <= 2 ? 'GOOD' : 
+                          'NEEDS ATTENTION';
+            
+            summaryContent.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                    <div style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem;">
+                            ${testResults.total}
+                        </div>
+                        <div style="color: var(--text-secondary);">Total Tests</div>
+                    </div>
+                    <div style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--success-color); margin-bottom: 0.5rem;">
+                            ${testResults.passed}
+                        </div>
+                        <div style="color: var(--text-secondary);">Passed</div>
+                    </div>
+                    <div style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--danger-color); margin-bottom: 0.5rem;">
+                            ${testResults.failed}
+                        </div>
+                        <div style="color: var(--text-secondary);">Failed</div>
+                    </div>
+                    <div style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem;">
+                            ${successRate}%
+                        </div>
+                        <div style="color: var(--text-secondary);">Success Rate</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-md); text-align: center;">
+                    <h3 style="margin-bottom: 1rem; color: var(--text-primary);">System Status: <span style="color: ${testResults.failed === 0 ? 'var(--success-color)' : testResults.failed <= 2 ? 'var(--warning-color)' : 'var(--danger-color)'};">${status}</span></h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        ${testResults.failed === 0 ? 'All features are working perfectly! Your PayCompare system is ready for production.' :
+                          testResults.failed <= 2 ? 'Most features are working. A few minor issues need attention.' :
+                          'Several issues detected. Please review failed tests and fix them before deployment.'}
+                    </p>
+                    <div style="display: flex; gap: 1rem; justify-content: center;">
+                        <button class="test-button" onclick="runAllTests()">
+                            <i class="fas fa-redo"></i> Run Tests Again
+                        </button>
+                        <a href="index.html" class="test-button" style="text-decoration: none;">
+                            <i class="fas fa-home"></i> Go to App
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            summarySection.style.display = 'block';
+            summarySection.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

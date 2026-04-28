@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - PayCompare</title>
+    <meta name="description" content="Admin dashboard for managing payment methods and user data.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="../index.html" class="navbar-brand">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="32" height="32">
+                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                </svg>
+                PayCompare Admin
+            </a>
+            
+            <ul class="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Dashboard</a></li>
+                <li><a href="payment-methods.html" class="navbar-link">Payment Methods</a></li>
+                <li><a href="users.html" class="navbar-link">Users</a></li>
+                <li><a href="logs.html" class="navbar-link">Logs</a></li>
+                <li><a href="../index.html" class="navbar-link">View Site</a></li>
+                <li>
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+            
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="padding-top: 80px;">
+        <!-- Admin Header -->
+        <section style="background: var(--gradient-primary); padding: 2rem 0;">
+            <div class="container">
+                <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h1 style="color: white; margin-bottom: 0.5rem;">Admin Dashboard</h1>
+                        <p style="color: rgba(255,255,255,0.9); margin: 0;">Manage payment methods, users, and system settings</p>
+                    </div>
+                    <div class="admin-user" style="display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.1); padding: 0.75rem 1rem; border-radius: var(--radius-lg);">
+                        <div style="width: 40px; height: 40px; background: white; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-weight: 700;">
+                            A
+                        </div>
+                        <div>
+                            <div style="color: white; font-weight: 600;">Administrator</div>
+                            <div style="color: rgba(255,255,255,0.8); font-size: 0.875rem;">admin@paycompare.com</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Overview -->
+        <section style="padding: 2rem 0; background: var(--bg-secondary);">
+            <div class="container">
+                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="color: var(--text-primary); margin: 0;">Payment Methods</h4>
+                                <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-value" style="font-size: 2rem; font-weight: 700; color: var(--primary-color); margin: 1rem 0 0.5rem;" id="totalMethods">8</div>
+                        <div class="stat-label" style="color: var(--text-secondary); font-size: 0.875rem;">Active payment methods</div>
+                    </div>
+                    
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="color: var(--text-primary); margin: 0;">Total Users</h4>
+                                <div style="width: 40px; height: 40px; background: var(--gradient-success); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-value" style="font-size: 2rem; font-weight: 700; color: var(--success-color); margin: 1rem 0 0.5rem;" id="totalUsers">247</div>
+                        <div class="stat-label" style="color: var(--text-secondary); font-size: 0.875rem;">Registered users</div>
+                    </div>
+                    
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="color: var(--text-primary); margin: 0;">Comparisons</h4>
+                                <div style="width: 40px; height: 40px; background: var(--gradient-secondary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-value" style="font-size: 2rem; font-weight: 700; color: var(--accent-color); margin: 1rem 0 0.5rem;" id="totalComparisons">1,842</div>
+                        <div class="stat-label" style="color: var(--text-secondary); font-size: 0.875rem;">Total comparisons made</div>
+                    </div>
+                    
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="color: var(--text-primary); margin: 0;">System Status</h4>
+                                <div style="width: 40px; height: 40px; background: var(--gradient-success); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-server"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-value" style="font-size: 2rem; font-weight: 700; color: var(--success-color); margin: 1rem 0 0.5rem;">Online</div>
+                        <div class="stat-label" style="color: var(--text-secondary); font-size: 0.875rem;">All systems operational</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section style="padding: 2rem 0;">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 style="color: var(--text-primary);">Quick Actions</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Common administrative tasks</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="quick-actions-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <button class="btn btn-primary" onclick="addPaymentMethod()">
+                                <i class="fas fa-plus"></i> Add Payment Method
+                            </button>
+                            <button class="btn btn-secondary" onclick="viewUsers()">
+                                <i class="fas fa-users"></i> Manage Users
+                            </button>
+                            <button class="btn btn-outline" onclick="viewLogs()">
+                                <i class="fas fa-list"></i> View Logs
+                            </button>
+                            <button class="btn btn-outline" onclick="exportData()">
+                                <i class="fas fa-download"></i> Export Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section style="padding: 2rem 0; background: var(--bg-secondary);">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 style="color: var(--text-primary);">Recent Activity</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Latest system activities and user actions</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="activity-list">
+                            <div class="activity-item" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border-light);">
+                                <div style="width: 40px; height: 40px; background: rgba(16, 185, 129, 0.1); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: var(--success-color);">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary);">New user registered</div>
+                                    <div style="color: var(--text-secondary); font-size: 0.875rem;">john.doe@example.com joined PayCompare</div>
+                                </div>
+                                <div style="color: var(--text-tertiary); font-size: 0.875rem;">2 minutes ago</div>
+                            </div>
+                            
+                            <div class="activity-item" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border-light);">
+                                <div style="width: 40px; height: 40px; background: rgba(79, 70, 229, 0.1); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: var(--primary-color);">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary);">Payment method updated</div>
+                                    <div style="color: var(--text-secondary); font-size: 0.875rem;">UPI fee structure was modified</div>
+                                </div>
+                                <div style="color: var(--text-tertiary); font-size: 0.875rem;">1 hour ago</div>
+                            </div>
+                            
+                            <div class="activity-item" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border-light);">
+                                <div style="width: 40px; height: 40px; background: rgba(245, 158, 11, 0.1); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: var(--warning-color);">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary);">Comparison completed</div>
+                                    <div style="color: var(--text-secondary); font-size: 0.875rem;">User compared 5 payment methods</div>
+                                </div>
+                                <div style="color: var(--text-tertiary); font-size: 0.875rem;">3 hours ago</div>
+                            </div>
+                            
+                            <div class="activity-item" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 0;">
+                                <div style="width: 40px; height: 40px; background: rgba(239, 68, 68, 0.1); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: var(--danger-color);">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary);">System alert</div>
+                                    <div style="color: var(--text-secondary); font-size: 0.875rem;">Database backup completed successfully</div>
+                                </div>
+                                <div style="color: var(--text-tertiary); font-size: 0.875rem;">5 hours ago</div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 1.5rem;">
+                            <button class="btn btn-outline" onclick="viewAllLogs()">
+                                <i class="fas fa-list"></i> View All Activity
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Health -->
+        <section style="padding: 2rem 0;">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 style="color: var(--text-primary);">System Health</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Monitor system performance and status</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="health-metrics" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                            <div class="health-item">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-weight: 600; color: var(--text-primary);">Database</span>
+                                    <span style="color: var(--success-color); font-weight: 600;">Healthy</span>
+                                </div>
+                                <div style="height: 8px; background: var(--border-light); border-radius: 4px; overflow: hidden;">
+                                    <div style="height: 100%; width: 95%; background: var(--success-color);"></div>
+                                </div>
+                                <div style="color: var(--text-tertiary); font-size: 0.75rem; margin-top: 0.25rem;">95% available</div>
+                            </div>
+                            
+                            <div class="health-item">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-weight: 600; color: var(--text-primary);">API Response</span>
+                                    <span style="color: var(--success-color); font-weight: 600;">Fast</span>
+                                </div>
+                                <div style="height: 8px; background: var(--border-light); border-radius: 4px; overflow: hidden;">
+                                    <div style="height: 100%; width: 98%; background: var(--success-color);"></div>
+                                </div>
+                                <div style="color: var(--text-tertiary); font-size: 0.75rem; margin-top: 0.25rem;">Avg: 120ms</div>
+                            </div>
+                            
+                            <div class="health-item">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-weight: 600; color: var(--text-primary);">Server Load</span>
+                                    <span style="color: var(--success-color); font-weight: 600;">Normal</span>
+                                </div>
+                                <div style="height: 8px; background: var(--border-light); border-radius: 4px; overflow: hidden;">
+                                    <div style="height: 100%; width: 45%; background: var(--success-color);"></div>
+                                </div>
+                                <div style="color: var(--text-tertiary); font-size: 0.75rem; margin-top: 0.25rem;">45% CPU usage</div>
+                            </div>
+                            
+                            <div class="health-item">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-weight: 600; color: var(--text-primary);">Storage</span>
+                                    <span style="color: var(--warning-color); font-weight: 600;">Warning</span>
+                                </div>
+                                <div style="height: 8px; background: var(--border-light); border-radius: 4px; overflow: hidden;">
+                                    <div style="height: 100%; width: 78%; background: var(--warning-color);"></div>
+                                </div>
+                                <div style="color: var(--text-tertiary); font-size: 0.75rem; margin-top: 0.25rem;">78% used</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PayCompare Admin</h4>
+                    <p>Administrative dashboard for payment comparison management.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Dashboard</a></li>
+                        <li><a href="payment-methods.html">Payment Methods</a></li>
+                        <li><a href="users.html">Users</a></li>
+                        <li><a href="logs.html">System Logs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="../help.html">Help Center</a></li>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2026 All Rights Reserved | PayCompare - E-Payment Comparison Tool</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../js/main.js"></script>
+    
+    <script>
+        // Admin dashboard specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAdminDashboard();
+            checkAdminAuth();
+        });
+        
+        function initializeAdminDashboard() {
+            loadDashboardStats();
+            loadRecentActivity();
+            updateSystemHealth();
+        }
+        
+        function checkAdminAuth() {
+            const user = sessionStorage.getItem('user') || localStorage.getItem('user');
+            if (!user) {
+                // Redirect to login if not authenticated
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            const userData = JSON.parse(user);
+            if (userData.role !== 'admin') {
+                // Redirect to main site if not admin
+                window.location.href = '../index.html';
+                return;
+            }
+        }
+        
+        async function loadDashboardStats() {
+            try {
+                // Simulate API calls
+                const stats = await simulateAdminStatsAPI();
+                
+                document.getElementById('totalMethods').textContent = stats.paymentMethods;
+                document.getElementById('totalUsers').textContent = stats.totalUsers.toLocaleString();
+                document.getElementById('totalComparisons').textContent = stats.totalComparisons.toLocaleString();
+                
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+        
+        async function simulateAdminStatsAPI() {
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            return {
+                paymentMethods: 8,
+                totalUsers: 247,
+                totalComparisons: 1842,
+                systemStatus: 'online'
+            };
+        }
+        
+        function loadRecentActivity() {
+            // Recent activity is already in HTML, but in a real app this would be loaded from API
+            console.log('Recent activity loaded');
+        }
+        
+        function updateSystemHealth() {
+            // System health is already displayed, but in a real app this would be updated periodically
+            setInterval(() => {
+                // Update system metrics periodically
+                console.log('System health updated');
+            }, 30000); // Update every 30 seconds
+        }
+        
+        // Quick action functions
+        function addPaymentMethod() {
+            window.location.href = 'payment-methods.html?action=add';
+        }
+        
+        function viewUsers() {
+            window.location.href = 'users.html';
+        }
+        
+        function viewLogs() {
+            window.location.href = 'logs.html';
+        }
+        
+        function viewAllLogs() {
+            window.location.href = 'logs.html';
+        }
+        
+        function exportData() {
+            showToast('Export feature coming soon!', 'info');
+            
+            // In a real implementation, this would trigger a data export
+            setTimeout(() => {
+                showToast('Data export will be available in the next update', 'info');
+            }, 1000);
+        }
+        
+        // Logout function
+        function logout() {
+            sessionStorage.removeItem('user');
+            localStorage.removeItem('user');
+            window.location.href = '../login.html';
+        }
+        
+        // Add logout button to admin user section
+        document.addEventListener('DOMContentLoaded', function() {
+            const adminUser = document.querySelector('.admin-user');
+            if (adminUser) {
+                const logoutBtn = document.createElement('button');
+                logoutBtn.className = 'btn btn-outline btn-sm';
+                logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+                logoutBtn.style.marginLeft = '1rem';
+                logoutBtn.onclick = logout;
+                adminUser.appendChild(logoutBtn);
+            }
+        });
+    </script>
+    
+    <style>
+        .admin-container {
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        .quick-actions-grid button {
+            transition: all var(--transition-fast);
+        }
+        
+        .quick-actions-grid button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .activity-item {
+            transition: background-color var(--transition-fast);
+        }
+        
+        .activity-item:hover {
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+        }
+        
+        .health-item {
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            transition: transform var(--transition-fast);
+        }
+        
+        .health-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .admin-user {
+                align-self: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .health-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</body>
+</html>

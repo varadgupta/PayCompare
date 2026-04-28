@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - PayCompare</title>
+    <meta name="description" content="Create your PayCompare account to start comparing digital payment methods and access analytics.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="32" height="32">
+                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                </svg>
+                PayCompare
+            </a>
+            
+            <ul class="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="comparison.html" class="navbar-link">Compare</a></li>
+                <li><a href="dashboard.html" class="navbar-link">Dashboard</a></li>
+                <li><a href="login.html" class="navbar-link">Login</a></li>
+                <li><a href="register.html" class="navbar-link">Register</a></li>
+                <li>
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+            
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="padding-top: 80px; min-height: calc(100vh - 80px);">
+        <!-- Register Section -->
+        <section style="display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 80px); padding: 2rem 0;">
+            <div class="container">
+                <div class="auth-container" style="max-width: 600px; margin: 0 auto;">
+                    <div class="auth-card card" style="border: 2px solid var(--border-color); box-shadow: var(--shadow-xl);">
+                        <div class="auth-header text-center" style="padding: 2rem 2rem 1rem;">
+                            <div style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; margin: 0 auto 1.5rem;">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <h2 style="color: var(--text-primary); margin-bottom: 0.5rem;">Create Account</h2>
+                            <p style="color: var(--text-secondary);">Join PayCompare and start comparing payment methods</p>
+                        </div>
+                        
+                        <div class="auth-body" style="padding: 0 2rem 2rem;">
+                            <form id="registerForm" onsubmit="handleRegister(event)">
+                                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                                    <div class="form-group">
+                                        <label for="firstName" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                                            <i class="fas fa-user"></i> First Name
+                                        </label>
+                                        <input type="text" id="firstName" name="firstName" required 
+                                               placeholder="Enter your first name"
+                                               style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; transition: border-color var(--transition-fast);">
+                                        <span class="error-message" style="color: var(--danger-color); font-size: 0.875rem; margin-top: 0.25rem; display: none;"></span>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="lastName" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                                            <i class="fas fa-user"></i> Last Name
+                                        </label>
+                                        <input type="text" id="lastName" name="lastName" required 
+                                               placeholder="Enter your last name"
+                                               style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; transition: border-color var(--transition-fast);">
+                                        <span class="error-message" style="color: var(--danger-color); font-size: 0.875rem; margin-top: 0.25rem; display: none;"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label for="username" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                                        <i class="fas fa-at"></i> Username
+                                    </label>
+                                    <input type="text" id="username" name="username" required 
+                                           placeholder="Choose a username"
+                                           style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; transition: border-color var(--transition-fast);">
+                                    <span class="error-message" style="color: var(--danger-color); font-size: 0.875rem; margin-top: 0.25rem; display: none;"></span>
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                                        <i class="fas fa-envelope"></i> Email Address
+                                    </label>
+                                    <input type="email" id="email" name="email" required 
+                                           placeholder="Enter your email address"
+                                           style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; transition: border-color var(--transition-fast);">
+                                    <span class="error-message" style="color: var(--danger-color); font-size: 0.875rem; margin-top: 0.25rem; display: none;"></span>
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label for="phone" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                                        <i class="fas fa-phone"></i> Phone Number (Optional)
+                                    </label>
+                                    <input type="tel" id="phone" name="phone" 
+                                           placeholder="Enter your phone number"
+                                           style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; transition: border-color var(--transition-fast);">
+                                    <span class="error-message" style="color: var(--danger-color); font-size: 0.875rem; margin-top: 0.25rem; display: none;"></span>
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label for="password" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                                        <i class="fas fa-lock"></i> Password
+                                    </label>
+                                    <div class="password-input-container" style="position: relative;">
+                                        <input type="password" id="password" name="password" required 
+                                               placeholder="Create a strong password"
+                                               style="width: 100%; padding: 0.75rem 3rem 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; transition: border-color var(--transition-fast);">
+                                        <button type="button" class="password-toggle" onclick="togglePassword('password')" 
+                                                style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer;">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="password-strength" style="margin-top: 0.5rem;">
+                                        <div class="strength-bar" style="height: 4px; background: var(--border-light); border-radius: 2px; overflow: hidden;">
+                                            <div class="strength-fill" style="height: 100%; width: 0%; transition: all var(--transition-fast);"></div>
+                                        </div>
+                                        <span class="strength-text" style="font-size: 0.75rem; color: var(--text-tertiary); margin-top: 0.25rem; display: block;">Password strength: Weak</span>
+                                    </div>
+                                    <span class="error-message" style="color: var(--danger-color); font-size: 0.875rem; margin-top: 0.25rem; display: none;"></span>
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label for="confirmPassword" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">
+                                        <i class="fas fa-lock"></i> Confirm Password
+                                    </label>
+                                    <div class="password-input-container" style="position: relative;">
+                                        <input type="password" id="confirmPassword" name="confirmPassword" required 
+                                               placeholder="Confirm your password"
+                                               style="width: 100%; padding: 0.75rem 3rem 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; transition: border-color var(--transition-fast);">
+                                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')" 
+                                                style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer;">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <span class="error-message" style="color: var(--danger-color); font-size: 0.875rem; margin-top: 0.25rem; display: none;"></span>
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label class="checkbox-container" style="display: flex; align-items: flex-start; cursor: pointer; color: var(--text-secondary); font-size: 0.875rem;">
+                                        <input type="checkbox" name="terms" required style="margin-right: 0.5rem; margin-top: 0.125rem;">
+                                        <span>I agree to the <a href="terms.html" style="color: var(--primary-color); text-decoration: none;">Terms of Service</a> and <a href="privacy.html" style="color: var(--primary-color); text-decoration: none;">Privacy Policy</a></span>
+                                    </label>
+                                    <span class="error-message" style="color: var(--danger-color); font-size: 0.875rem; margin-top: 0.25rem; display: none;"></span>
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 1.5rem;">
+                                    <label class="checkbox-container" style="display: flex; align-items: center; cursor: pointer; color: var(--text-secondary); font-size: 0.875rem;">
+                                        <input type="checkbox" name="newsletter" style="margin-right: 0.5rem;">
+                                        <span>Send me payment comparison tips and updates (optional)</span>
+                                    </label>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-bottom: 1rem;" id="registerBtn">
+                                    <i class="fas fa-user-plus"></i> Create Account
+                                </button>
+                                
+                                <div class="divider" style="text-align: center; margin: 1.5rem 0; position: relative;">
+                                    <span style="background: var(--bg-card); padding: 0 1rem; color: var(--text-secondary); font-size: 0.875rem;">OR</span>
+                                    <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border-color); z-index: -1;"></div>
+                                </div>
+                                
+                                <div class="social-login" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <button type="button" class="btn btn-outline" onclick="socialRegister('google')" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                        <i class="fab fa-google"></i> Google
+                                    </button>
+                                    <button type="button" class="btn btn-outline" onclick="socialRegister('facebook')" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                        <i class="fab fa-facebook-f"></i> Facebook
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="auth-footer text-center" style="padding: 1.5rem 2rem; border-top: 1px solid var(--border-light); background: var(--bg-tertiary);">
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0;">
+                                Already have an account? 
+                                <a href="login.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Sign in</a>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Notice -->
+                    <div class="security-notice" style="margin-top: 2rem; padding: 1rem; background: rgba(79, 70, 229, 0.1); border: 1px solid rgba(79, 70, 229, 0.3); border-radius: var(--radius-md); text-align: center;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <i class="fas fa-shield-alt" style="color: var(--primary-color);"></i>
+                            <span style="color: var(--primary-color); font-weight: 600;">Secure Registration</span>
+                        </div>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0;">
+                            Your data is protected with industry-standard encryption and will never be shared with third parties.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PayCompare</h4>
+                    <p>Your trusted companion for digital payment comparisons.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="comparison.html">Compare</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="help.html">Help Center</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2026 All Rights Reserved | PayCompare - E-Payment Comparison Tool</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    
+    <script>
+        // Register page specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeRegisterForm();
+        });
+        
+        function initializeRegisterForm() {
+            const form = document.getElementById('registerForm');
+            const inputs = form.querySelectorAll('input[required]');
+            
+            // Add input validation
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                
+                input.addEventListener('input', function() {
+                    clearFieldError(this);
+                    
+                    // Special handling for password strength
+                    if (input.id === 'password') {
+                        updatePasswordStrength(input.value);
+                    }
+                    
+                    // Special handling for password confirmation
+                    if (input.id === 'confirmPassword') {
+                        const password = document.getElementById('password').value;
+                        validatePasswordConfirmation(input.value, password);
+                    }
+                });
+            });
+            
+            // Add input focus effects
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = 'var(--primary-color)';
+                    this.style.boxShadow = '0 0 0 3px rgba(79, 70, 229, 0.1)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '';
+                    this.style.boxShadow = '';
+                });
+            });
+        }
+        
+        function validateField(field) {
+            const errorElement = field.parentElement.querySelector('.error-message');
+            let isValid = true;
+            let errorMessage = '';
+            
+            // Name validation
+            if (field.id === 'firstName' || field.id === 'lastName') {
+                if (!field.value.trim()) {
+                    errorMessage = `${field.id === 'firstName' ? 'First' : 'Last'} name is required`;
+                    isValid = false;
+                } else if (field.value.trim().length < 2) {
+                    errorMessage = 'Name must be at least 2 characters';
+                    isValid = false;
+                } else if (!/^[a-zA-Z\s]+$/.test(field.value.trim())) {
+                    errorMessage = 'Name can only contain letters and spaces';
+                    isValid = false;
+                }
+            }
+            
+            // Username validation
+            if (field.id === 'username') {
+                if (!field.value.trim()) {
+                    errorMessage = 'Username is required';
+                    isValid = false;
+                } else if (field.value.trim().length < 3) {
+                    errorMessage = 'Username must be at least 3 characters';
+                    isValid = false;
+                } else if (!/^[a-zA-Z0-9_]+$/.test(field.value.trim())) {
+                    errorMessage = 'Username can only contain letters, numbers, and underscores';
+                    isValid = false;
+                }
+            }
+            
+            // Email validation
+            if (field.type === 'email') {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!field.value.trim()) {
+                    errorMessage = 'Email is required';
+                    isValid = false;
+                } else if (!emailRegex.test(field.value)) {
+                    errorMessage = 'Please enter a valid email address';
+                    isValid = false;
+                }
+            }
+            
+            // Phone validation (optional)
+            if (field.type === 'tel' && field.value.trim()) {
+                const phoneRegex = /^[+]?[\d\s\-\(\)]+$/;
+                if (!phoneRegex.test(field.value.trim())) {
+                    errorMessage = 'Please enter a valid phone number';
+                    isValid = false;
+                }
+            }
+            
+            // Password validation
+            if (field.type === 'password' && field.id === 'password') {
+                if (!field.value.trim()) {
+                    errorMessage = 'Password is required';
+                    isValid = false;
+                } else if (field.value.length < 8) {
+                    errorMessage = 'Password must be at least 8 characters';
+                    isValid = false;
+                } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(field.value)) {
+                    errorMessage = 'Password must contain at least one uppercase letter, one lowercase letter, and one number';
+                    isValid = false;
+                }
+            }
+            
+            // Password confirmation validation
+            if (field.type === 'password' && field.id === 'confirmPassword') {
+                const password = document.getElementById('password').value;
+                if (!field.value.trim()) {
+                    errorMessage = 'Please confirm your password';
+                    isValid = false;
+                } else if (field.value !== password) {
+                    errorMessage = 'Passwords do not match';
+                    isValid = false;
+                }
+            }
+            
+            // Terms validation
+            if (field.type === 'checkbox' && field.name === 'terms') {
+                if (!field.checked) {
+                    errorMessage = 'You must agree to the terms and conditions';
+                    isValid = false;
+                }
+            }
+            
+            // Show/hide error
+            if (!isValid && errorElement) {
+                errorElement.textContent = errorMessage;
+                errorElement.style.display = 'block';
+                field.style.borderColor = 'var(--danger-color)';
+            } else if (errorElement) {
+                errorElement.style.display = 'none';
+                field.style.borderColor = '';
+            }
+            
+            return isValid;
+        }
+        
+        function clearFieldError(field) {
+            const errorElement = field.parentElement.querySelector('.error-message');
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+            field.style.borderColor = '';
+        }
+        
+        function updatePasswordStrength(password) {
+            const strengthFill = document.querySelector('.strength-fill');
+            const strengthText = document.querySelector('.strength-text');
+            
+            let strength = 0;
+            let strengthLabel = 'Weak';
+            let strengthColor = 'var(--danger-color)';
+            
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^a-zA-Z\d]/.test(password)) strength++;
+            
+            if (strength <= 2) {
+                strengthLabel = 'Weak';
+                strengthColor = 'var(--danger-color)';
+            } else if (strength <= 4) {
+                strengthLabel = 'Medium';
+                strengthColor = 'var(--warning-color)';
+            } else {
+                strengthLabel = 'Strong';
+                strengthColor = 'var(--success-color)';
+            }
+            
+            const percentage = (strength / 6) * 100;
+            strengthFill.style.width = percentage + '%';
+            strengthFill.style.backgroundColor = strengthColor;
+            strengthText.textContent = 'Password strength: ' + strengthLabel;
+            strengthText.style.color = strengthColor;
+        }
+        
+        function validatePasswordConfirmation(confirmPassword, password) {
+            const confirmField = document.getElementById('confirmPassword');
+            const errorElement = confirmField.parentElement.querySelector('.error-message');
+            
+            if (confirmPassword && password && confirmPassword !== password) {
+                if (errorElement) {
+                    errorElement.textContent = 'Passwords do not match';
+                    errorElement.style.display = 'block';
+                }
+                confirmField.style.borderColor = 'var(--danger-color)';
+                return false;
+            } else {
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+                confirmField.style.borderColor = '';
+                return true;
+            }
+        }
+        
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const toggle = field.parentElement.querySelector('.password-toggle i');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                toggle.classList.remove('fa-eye');
+                toggle.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                toggle.classList.remove('fa-eye-slash');
+                toggle.classList.add('fa-eye');
+            }
+        }
+        
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = document.getElementById('registerBtn');
+            const inputs = form.querySelectorAll('input[required]');
+            
+            // Validate all fields
+            let isFormValid = true;
+            inputs.forEach(input => {
+                if (!validateField(input)) {
+                    isFormValid = false;
+                }
+            });
+            
+            if (!isFormValid) {
+                showToast('Please fix the errors in the form', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+            
+            // Get form data
+            const formData = new FormData(form);
+            const registerData = {
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                username: formData.get('username'),
+                email: formData.get('email'),
+                phone: formData.get('phone') || null,
+                password: formData.get('password'),
+                newsletter: formData.get('newsletter') === 'on'
+            };
+            
+            try {
+                // Simulate API call
+                const response = await simulateRegisterAPI(registerData);
+                
+                if (response.success) {
+                    showToast('Account created successfully! Redirecting to login...', 'success');
+                    
+                    // Redirect to login page
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    throw new Error(response.message || 'Registration failed');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showToast(error.message || 'Registration failed. Please try again.', 'error');
+            } finally {
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+        
+        async function simulateRegisterAPI(registerData) {
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Simulate validation logic
+            if (registerData.email === 'admin@paycompare.com' || registerData.email === 'user@example.com') {
+                return {
+                    success: false,
+                    message: 'Email already exists'
+                };
+            }
+            
+            if (registerData.username === 'admin' || registerData.username === 'testuser') {
+                return {
+                    success: false,
+                    message: 'Username already taken'
+                };
+            }
+            
+            // Simulate successful registration
+            return {
+                success: true,
+                user: {
+                    id: Math.floor(Math.random() * 1000),
+                    username: registerData.username,
+                    email: registerData.email,
+                    full_name: `${registerData.firstName} ${registerData.lastName}`,
+                    role: 'user'
+                }
+            };
+        }
+        
+        function socialRegister(provider) {
+            showToast(`${provider} registration coming soon!`, 'info');
+            
+            // In a real implementation, this would redirect to the OAuth provider
+            // For demo purposes, we'll show a message
+            setTimeout(() => {
+                showToast('This feature is not available in the demo', 'warning');
+            }, 1000);
+        }
+        
+        // Check if user is already logged in
+        function checkLoginStatus() {
+            const user = sessionStorage.getItem('user') || localStorage.getItem('user');
+            if (user) {
+                // User is already logged in, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
+        }
+        
+        // Run check on page load
+        checkLoginStatus();
+    </script>
+    
+    <style>
+        .auth-container {
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        .password-input-container input:focus + .password-toggle {
+            color: var(--primary-color);
+        }
+        
+        .checkbox-container input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+        
+        .error-message {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .strength-bar {
+            margin-top: 0.5rem;
+        }
+        
+        .social-login button {
+            transition: all var(--transition-fast);
+        }
+        
+        .social-login button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        @media (max-width: 640px) {
+            .auth-card {
+                margin: 0 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-login {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</body>
+</html>

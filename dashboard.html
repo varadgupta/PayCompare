@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - PayCompare</title>
+    <meta name="description" content="Visual analytics dashboard for payment method comparisons with interactive charts and insights.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="32" height="32">
+                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                </svg>
+                PayCompare
+            </a>
+            
+            <ul class="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="comparison.html" class="navbar-link">Compare</a></li>
+                <li><a href="dashboard.html" class="navbar-link">Dashboard</a></li>
+                <li><a href="login.html" class="navbar-link">Login</a></li>
+                <li><a href="register.html" class="navbar-link">Register</a></li>
+                <li>
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+            
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="padding-top: 80px;">
+        <!-- Header Section -->
+        <section style="background: var(--gradient-primary); padding: 3rem 0;">
+            <div class="container text-center">
+                <h1 style="color: white; font-size: 2.5rem; margin-bottom: 1rem;">Smart Analytics Dashboard</h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.125rem;">
+                    Dynamic payment insights based on your transaction amount
+                </p>
+            </div>
+        </section>
+
+        <!-- Transaction Input Section -->
+        <section style="padding: 2rem 0; background: var(--bg-secondary);">
+            <div class="container">
+                <div class="transaction-input-card card" style="background: linear-gradient(135deg, var(--gradient-primary), var(--gradient-secondary)); border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+                    <div class="card-content" style="padding: 2rem;">
+                        <div class="transaction-input-wrapper" style="text-align: center;">
+                            <div style="margin-bottom: 2rem;">
+                                <label for="dashboardAmount" style="display: block; color: white; font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">
+                                    <i class="fas fa-chart-line"></i> Enter Amount for Dynamic Analysis
+                                </label>
+                                <div class="amount-input-container" style="display: inline-flex; align-items: center; background: rgba(255,255,255,0.95); border-radius: 50px; padding: 0.5rem 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.15); max-width: 400px;">
+                                    <span style="font-size: 1.5rem; color: var(--primary-color); font-weight: 700;">₹</span>
+                                    <input type="number" id="dashboardAmount" placeholder="5000" min="1" max="9999999" step="0.01"
+                                           style="border: none; background: transparent; font-size: 1.5rem; font-weight: 700; color: var(--text-primary); width: 200px; outline: none; text-align: center;">
+                                </div>
+                            </div>
+                            
+                            <button id="updateChartsBtn" class="btn btn-light btn-lg" onclick="updateDashboardCharts()" style="background: white; color: var(--primary-color); padding: 0.75rem 2rem; font-size: 1rem; font-weight: 700; border-radius: 50px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: all 0.3s ease;">
+                                <i class="fas fa-sync-alt"></i> Update Charts
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Overview -->
+        <section style="padding: 2rem 0; background: var(--bg-secondary);">
+            <div class="container">
+                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="color: var(--text-primary); margin: 0;">Total Methods</h4>
+                                <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-value" style="font-size: 2rem; font-weight: 700; color: var(--primary-color); margin: 1rem 0 0.5rem;" id="totalMethods">8</div>
+                        <div class="stat-label" style="color: var(--text-secondary); font-size: 0.875rem;">Payment Methods Available</div>
+                    </div>
+                    
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="color: var(--text-primary); margin: 0;">Avg. Fee</h4>
+                                <div style="width: 40px; height: 40px; background: var(--gradient-success); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-rupee-sign"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-value" style="font-size: 2rem; font-weight: 700; color: var(--success-color); margin: 1rem 0 0.5rem;" id="avgFee">₹2.5</div>
+                        <div class="stat-label" style="color: var(--text-secondary); font-size: 0.875rem;">Average Transaction Fee</div>
+                    </div>
+                    
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="color: var(--text-primary); margin: 0;">Avg. Speed</h4>
+                                <div style="width: 40px; height: 40px; background: var(--gradient-secondary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-value" style="font-size: 2rem; font-weight: 700; color: var(--accent-color); margin: 1rem 0 0.5rem;" id="avgSpeed">Instant</div>
+                        <div class="stat-label" style="color: var(--text-secondary); font-size: 0.875rem;">Average Transaction Speed</div>
+                    </div>
+                    
+                    <div class="stat-card card">
+                        <div class="stat-header">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="color: var(--text-primary); margin: 0;">Avg. Uptime</h4>
+                                <div style="width: 40px; height: 40px; background: var(--gradient-success); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-server"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-value" style="font-size: 2rem; font-weight: 700; color: var(--success-color); margin: 1rem 0 0.5rem;" id="avgUptime">99.2%</div>
+                        <div class="stat-label" style="color: var(--text-secondary); font-size: 0.875rem;">Average Availability</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section style="padding: 3rem 0;">
+            <div class="container">
+                <div class="charts-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                    <!-- Fee Comparison Chart -->
+                    <div class="chart-card card">
+                        <div class="card-header">
+                            <h3 style="color: var(--text-primary);">Transaction Fees Comparison</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem;">Compare fees across different payment methods</p>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="feeChart" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Availability Pie Chart -->
+                    <div class="chart-card card">
+                        <div class="card-header">
+                            <h3 style="color: var(--text-primary);">Availability Distribution</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem;">Service uptime percentages</p>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="availabilityChart" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Speed Trends Chart -->
+                    <div class="chart-card card">
+                        <div class="card-header">
+                            <h3 style="color: var(--text-primary);">Transaction Speed Analysis</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem;">Processing time comparison</p>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="speedChart" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Overall Comparison Radar -->
+                    <div class="chart-card card">
+                        <div class="card-header">
+                            <h3 style="color: var(--text-primary);">Overall Performance Radar</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem;">Multi-factor comparison analysis</p>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="radarChart" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Analytics -->
+        <section style="padding: 3rem 0; background: var(--bg-secondary);">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 style="color: var(--text-primary);">Advanced Analytics</h3>
+                        <p style="color: var(--text-secondary);">Deep insights and trend analysis</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="analytics-tabs" style="margin-bottom: 2rem;">
+                            <div class="tab-buttons" style="display: flex; gap: 0.5rem; border-bottom: 2px solid var(--border-color); margin-bottom: 2rem;">
+                                <button class="tab-btn active" onclick="switchTab('trends')" data-tab="trends" style="padding: 1rem 1.5rem; background: none; border: none; border-bottom: 2px solid var(--primary-color); color: var(--primary-color); font-weight: 600; cursor: pointer;">
+                                    <i class="fas fa-chart-line"></i> Trends
+                                </button>
+                                <button class="tab-btn" onclick="switchTab('security')" data-tab="security" style="padding: 1rem 1.5rem; background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-secondary); font-weight: 600; cursor: pointer;">
+                                    <i class="fas fa-shield-alt"></i> Security
+                                </button>
+                                <button class="tab-btn" onclick="switchTab('recommendations')" data-tab="recommendations" style="padding: 1rem 1.5rem; background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-secondary); font-weight: 600; cursor: pointer;">
+                                    <i class="fas fa-star"></i> Recommendations
+                                </button>
+                            </div>
+                            
+                            <!-- Trends Tab -->
+                            <div class="tab-content" id="trends-tab" style="display: block;">
+                                <div class="trends-content">
+                                    <canvas id="trendsChart" style="max-height: 400px;"></canvas>
+                                    <div class="trends-insights" style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                                        <div class="insight-card" style="padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-lg);">
+                                            <h4 style="color: var(--primary-color); margin-bottom: 1rem;">
+                                                <i class="fas fa-arrow-up"></i> Growing Trend
+                                            </h4>
+                                            <p style="color: var(--text-secondary);">UPI and mobile wallets show 25% growth in usage over the last quarter, indicating a shift towards instant payments.</p>
+                                        </div>
+                                        <div class="insight-card" style="padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-lg);">
+                                            <h4 style="color: var(--success-color); margin-bottom: 1rem;">
+                                                <i class="fas fa-check-circle"></i> High Availability
+                                            </h4>
+                                            <p style="color: var(--text-secondary);">Most payment methods maintain 99%+ uptime, ensuring reliable service for critical transactions.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Security Tab -->
+                            <div class="tab-content" id="security-tab" style="display: none;">
+                                <div class="security-content">
+                                    <canvas id="securityChart" style="max-height: 400px;"></canvas>
+                                    <div class="security-insights" style="margin-top: 2rem;">
+                                        <div class="security-ratings" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                            <div class="security-item" style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-lg);">
+                                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
+                                                <h5 style="color: var(--text-primary); margin-bottom: 0.5rem;">Very High</h5>
+                                                <div style="font-size: 1.25rem; font-weight: 700; color: var(--success-color);">2 Methods</div>
+                                            </div>
+                                            <div class="security-item" style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-lg);">
+                                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛡️</div>
+                                                <h5 style="color: var(--text-primary); margin-bottom: 0.5rem;">High</h5>
+                                                <div style="font-size: 1.25rem; font-weight: 700; color: var(--primary-color);">3 Methods</div>
+                                            </div>
+                                            <div class="security-item" style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-lg);">
+                                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔐</div>
+                                                <h5 style="color: var(--text-primary); margin-bottom: 0.5rem;">Medium</h5>
+                                                <div style="font-size: 1.25rem; font-weight: 700; color: var(--warning-color);">2 Methods</div>
+                                            </div>
+                                            <div class="security-item" style="text-align: center; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-lg);">
+                                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚠️</div>
+                                                <h5 style="color: var(--text-primary); margin-bottom: 0.5rem;">Low</h5>
+                                                <div style="font-size: 1.25rem; font-weight: 700; color: var(--danger-color);">1 Method</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Recommendations Tab -->
+                            <div class="tab-content" id="recommendations-tab" style="display: none;">
+                                <div class="recommendations-content">
+                                    <div class="recommendation-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                                        <div class="recommendation-card card" style="border: 2px solid var(--success-color);">
+                                            <div class="card-header">
+                                                <h4 style="color: var(--success-color);">Best for Daily Use</h4>
+                                            </div>
+                                            <div class="card-content">
+                                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                                    <div style="width: 50px; height: 50px; background: var(--gradient-primary); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">U</div>
+                                                    <div>
+                                                        <h5 style="color: var(--text-primary); margin: 0;">UPI</h5>
+                                                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0;">Zero fees, instant transfer</p>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                    <span class="badge badge-success">Recommended</span>
+                                                    <span style="color: var(--primary-color); font-weight: 600;">95% Match</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="recommendation-card card" style="border: 2px solid var(--primary-color);">
+                                            <div class="card-header">
+                                                <h4 style="color: var(--primary-color);">Best for Large Transactions</h4>
+                                            </div>
+                                            <div class="card-content">
+                                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                                    <div style="width: 50px; height: 50px; background: var(--gradient-secondary); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">CC</div>
+                                                    <div>
+                                                        <h5 style="color: var(--text-primary); margin: 0;">Credit Card</h5>
+                                                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0;">High security, rewards</p>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                    <span class="badge badge-high">Secure</span>
+                                                    <span style="color: var(--primary-color); font-weight: 600;">88% Match</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="recommendation-card card" style="border: 2px solid var(--warning-color);">
+                                            <div class="card-header">
+                                                <h4 style="color: var(--warning-color);">Best for Bank Transfers</h4>
+                                            </div>
+                                            <div class="card-content">
+                                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                                    <div style="width: 50px; height: 50px; background: var(--gradient-success); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700;">NB</div>
+                                                    <div>
+                                                        <h5 style="color: var(--text-primary); margin: 0;">Net Banking</h5>
+                                                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0;">Direct bank transfer</p>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                    <span class="badge badge-medium">Moderate</span>
+                                                    <span style="color: var(--primary-color); font-weight: 600;">76% Match</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Export Section -->
+        <section style="padding: 3rem 0;">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 style="color: var(--text-primary);">Export Analytics</h3>
+                        <p style="color: var(--text-secondary);">Download dashboard data and reports</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="export-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <button class="btn btn-primary" onclick="exportChartData('csv')">
+                                <i class="fas fa-file-csv"></i> Export CSV
+                            </button>
+                            <button class="btn btn-primary" onclick="exportChartData('json')">
+                                <i class="fas fa-file-code"></i> Export JSON
+                            </button>
+                            <button class="btn btn-primary" onclick="exportChartImage()">
+                                <i class="fas fa-image"></i> Save Chart
+                            </button>
+                            <button class="btn btn-outline" onclick="printDashboard()">
+                                <i class="fas fa-print"></i> Print Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PayCompare</h4>
+                    <p>Your trusted companion for digital payment comparisons.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="comparison.html">Compare</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="help.html">Help Center</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2026 All Rights Reserved | PayCompare - E-Payment Comparison Tool</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    
+    <script>
+        // Dashboard specific JavaScript
+        let dashboardCharts = {};
+        let paymentMethodsData = [];
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+        });
+        
+        // Load payment methods data for dashboard
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('api/payment-methods.php');
+                if (response.ok) {
+                    paymentMethodsData = await response.json();
+                    initializeDashboardCharts();
+                    updateDashboardStats();
+                } else {
+                    throw new Error('Failed to load data');
+                }
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                // Use sample data
+                paymentMethodsData = getSamplePaymentMethods();
+                initializeDashboardCharts();
+                updateDashboardStats();
+            }
+        }
+        
+        // Update dashboard statistics
+        function updateDashboardStats() {
+            const totalMethodsEl = document.getElementById('totalMethods');
+            const avgFeeEl = document.getElementById('avgFee');
+            const avgSpeedEl = document.getElementById('avgSpeed');
+            const avgUptimeEl = document.getElementById('avgUptime');
+            
+            if (totalMethodsEl) totalMethodsEl.textContent = paymentMethodsData.length;
+            
+            // Calculate average fee
+            const avgFee = paymentMethodsData.reduce((sum, method) => sum + method.transaction_fee, 0) / paymentMethodsData.length;
+            if (avgFeeEl) avgFeeEl.textContent = `₹${avgFee.toFixed(1)}`;
+            
+            // Calculate average speed
+            const instantCount = paymentMethodsData.filter(m => m.transaction_speed === 'instant').length;
+            if (instantCount > paymentMethodsData.length / 2) {
+                if (avgSpeedEl) avgSpeedEl.textContent = 'Instant';
+            } else {
+                const avgSpeedSeconds = paymentMethodsData.reduce((sum, method) => sum + method.speed_value, 0) / paymentMethodsData.length;
+                if (avgSpeedEl) avgSpeedEl.textContent = avgSpeedSeconds < 60 ? `${Math.round(avgSpeedSeconds)}s` : `${Math.round(avgSpeedSeconds / 60)}m`;
+            }
+            
+            // Calculate average uptime
+            const avgUptime = paymentMethodsData.reduce((sum, method) => sum + method.availability_percentage, 0) / paymentMethodsData.length;
+            if (avgUptimeEl) avgUptimeEl.textContent = `${avgUptime.toFixed(1)}%`;
+        }
+        
+        // Initialize all dashboard charts
+        function initializeDashboardCharts() {
+            createFeeComparisonChart();
+            createAvailabilityPieChart();
+            createSpeedAnalysisChart();
+            createOverallRadarChart();
+            createTrendsChart();
+            createSecurityChart();
+        }
+        
+        // Fee Comparison Chart
+        function createFeeComparisonChart() {
+            const ctx = document.getElementById('feeChart');
+            if (!ctx) return;
+            
+            const labels = paymentMethodsData.map(method => method.name);
+            const fees = paymentMethodsData.map(method => method.transaction_fee);
+            
+            dashboardCharts.fee = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Transaction Fee (₹)',
+                        data: fees,
+                        backgroundColor: 'rgba(79, 70, 229, 0.6)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Fee: ₹${context.parsed.y}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Availability Pie Chart
+        function createAvailabilityPieChart() {
+            const ctx = document.getElementById('availabilityChart');
+            if (!ctx) return;
+            
+            const labels = paymentMethodsData.map(method => method.name);
+            const availability = paymentMethodsData.map(method => method.availability_percentage);
+            
+            dashboardCharts.availability = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: availability,
+                        backgroundColor: [
+                            'rgba(79, 70, 229, 0.8)',
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(139, 92, 246, 0.8)',
+                            'rgba(236, 72, 153, 0.8)',
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(251, 146, 60, 0.8)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Speed Analysis Chart
+        function createSpeedAnalysisChart() {
+            const ctx = document.getElementById('speedChart');
+            if (!ctx) return;
+            
+            const labels = paymentMethodsData.map(method => method.name);
+            const speeds = paymentMethodsData.map(method => method.speed_value);
+            
+            dashboardCharts.speed = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Processing Time (seconds)',
+                        data: speeds,
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.parsed.y;
+                                    if (value === 1) return 'Instant';
+                                    if (value < 60) return `${value} seconds`;
+                                    return `${Math.round(value / 60)} minutes`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value === 1) return 'Instant';
+                                    if (value < 60) return value + 's';
+                                    return Math.round(value / 60) + 'm';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Overall Radar Chart
+        function createOverallRadarChart() {
+            const ctx = document.getElementById('radarChart');
+            if (!ctx) return;
+            
+            // Select top 3 payment methods for radar chart
+            const topMethods = paymentMethodsData.slice(0, 3);
+            
+            dashboardCharts.radar = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Fee Efficiency', 'Speed', 'Availability', 'Security', 'Ease of Use'],
+                    datasets: topMethods.map((method, index) => ({
+                        label: method.name,
+                        data: [
+                            Math.max(0, 100 - method.transaction_fee * 10),
+                            Math.max(0, 100 - method.speed_value / 10),
+                            method.availability_percentage,
+                            getSecurityScore(method.security_level) * 25,
+                            getEaseScore(method.ease_of_use) * 25
+                        ],
+                        borderColor: `hsla(${index * 120}, 70%, 50%, 1)`,
+                        backgroundColor: `hsla(${index * 120}, 70%, 50%, 0.2)`,
+                        borderWidth: 2,
+                        pointBackgroundColor: `hsla(${index * 120}, 70%, 50%, 1)`,
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Trends Chart
+        function createTrendsChart() {
+            const ctx = document.getElementById('trendsChart');
+            if (!ctx) return;
+            
+            // Simulate monthly trend data
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+            const datasets = paymentMethodsData.slice(0, 3).map((method, index) => ({
+                label: method.name,
+                data: months.map(() => Math.floor(Math.random() * 50) + 50),
+                borderColor: `hsla(${index * 120}, 70%, 50%, 1)`,
+                backgroundColor: `hsla(${index * 120}, 70%, 50%, 0.1)`,
+                tension: 0.4,
+                fill: true
+            }));
+            
+            dashboardCharts.trends = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Usage Trends Over Last 6 Months'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Usage Percentage'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Security Chart
+        function createSecurityChart() {
+            const ctx = document.getElementById('securityChart');
+            if (!ctx) return;
+            
+            const securityLevels = ['Very High', 'High', 'Medium', 'Low'];
+            const securityCounts = [
+                paymentMethodsData.filter(m => m.security_level === 'very_high').length,
+                paymentMethodsData.filter(m => m.security_level === 'high').length,
+                paymentMethodsData.filter(m => m.security_level === 'medium').length,
+                paymentMethodsData.filter(m => m.security_level === 'low').length
+            ];
+            
+            dashboardCharts.security = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: securityLevels,
+                    datasets: [{
+                        label: 'Number of Payment Methods',
+                        data: securityCounts,
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(79, 70, 229, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(239, 68, 68, 0.8)'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Security Level Distribution'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.borderBottom = '2px solid transparent';
+                btn.style.color = 'var(--text-secondary)';
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName + '-tab');
+            if (selectedTab) {
+                selectedTab.style.display = 'block';
+            }
+            
+            // Activate selected button
+            const selectedBtn = document.querySelector(`[data-tab="${tabName}"]`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('active');
+                selectedBtn.style.borderBottom = '2px solid var(--primary-color)';
+                selectedBtn.style.color = 'var(--primary-color)';
+            }
+            
+            // Initialize charts for the selected tab if needed
+            if (tabName === 'trends' && !dashboardCharts.trends) {
+                setTimeout(() => createTrendsChart(), 100);
+            } else if (tabName === 'security' && !dashboardCharts.security) {
+                setTimeout(() => createSecurityChart(), 100);
+            }
+        }
+        
+        // Export functions
+        function exportChartData(format) {
+            const data = paymentMethodsData.map(method => ({
+                name: method.name,
+                fee: method.transaction_fee,
+                speed: method.speed_value,
+                availability: method.availability_percentage,
+                security: method.security_level,
+                ease_of_use: method.ease_of_use
+            }));
+            
+            if (format === 'csv') {
+                exportToCSV(data);
+            } else if (format === 'json') {
+                exportToJSON(data);
+            }
+        }
+        
+        function exportToCSV(data) {
+            const csv = [
+                Object.keys(data[0]).join(','),
+                ...data.map(row => Object.values(row).join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'paycompare-dashboard.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            showToast('Dashboard data exported to CSV!', 'success');
+        }
+        
+        function exportToJSON(data) {
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'paycompare-dashboard.json';
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            showToast('Dashboard data exported to JSON!', 'success');
+        }
+        
+        function exportChartImage() {
+            // Export the first visible chart as image
+            const chartCanvas = document.querySelector('canvas');
+            if (chartCanvas) {
+                const url = chartCanvas.toDataURL('image/png');
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'paycompare-chart.png';
+                a.click();
+                
+                showToast('Chart exported as image!', 'success');
+            }
+        }
+        
+        function printDashboard() {
+            window.print();
+            showToast('Print dialog opened', 'info');
+        }
+        
+        // Helper functions
+        function getSecurityScore(level) {
+            const scores = { 'low': 1, 'medium': 2, 'high': 3, 'very_high': 4 };
+            return scores[level] || 1;
+        }
+        
+        function getEaseScore(level) {
+            const scores = { 'poor': 1, 'fair': 2, 'good': 3, 'excellent': 4 };
+            return scores[level] || 1;
+        }
+        
+        function getSamplePaymentMethods() {
+            return [
+                {
+                    id: 1,
+                    name: 'UPI',
+                    description: 'Unified Payments Interface - Instant mobile payments',
+                    transaction_fee: 0,
+                    fee_type: 'fixed',
+                    transaction_speed: 'instant',
+                    speed_value: 1,
+                    availability_percentage: 99.9,
+                    security_level: 'high',
+                    ease_of_use: 'excellent'
+                },
+                {
+                    id: 2,
+                    name: 'Net Banking',
+                    description: 'Online banking through bank websites and apps',
+                    transaction_fee: 7.5,
+                    fee_type: 'range',
+                    min_fee: 5,
+                    max_fee: 10,
+                    transaction_speed: 'minutes',
+                    speed_value: 180,
+                    availability_percentage: 98,
+                    security_level: 'medium',
+                    ease_of_use: 'good'
+                },
+                {
+                    id: 3,
+                    name: 'Credit Card',
+                    description: 'Visa, Mastercard, RuPay credit card payments',
+                    transaction_fee: 2,
+                    fee_type: 'percentage',
+                    min_fee: 1,
+                    max_fee: 3,
+                    transaction_speed: 'instant',
+                    speed_value: 1,
+                    availability_percentage: 99,
+                    security_level: 'very_high',
+                    ease_of_use: 'excellent'
+                },
+                {
+                    id: 4,
+                    name: 'Debit Card',
+                    description: 'Visa, Mastercard, RuPay debit card payments',
+                    transaction_fee: 1.5,
+                    fee_type: 'percentage',
+                    min_fee: 0.5,
+                    max_fee: 2,
+                    transaction_speed: 'instant',
+                    speed_value: 1,
+                    availability_percentage: 99,
+                    security_level: 'high',
+                    ease_of_use: 'excellent'
+                },
+                {
+                    id: 5,
+                    name: 'PayTM Wallet',
+                    description: 'Digital wallet for quick payments',
+                    transaction_fee: 0,
+                    fee_type: 'fixed',
+                    min_fee: 0,
+                    max_fee: 0,
+                    transaction_speed: 'instant',
+                    speed_value: 1,
+                    availability_percentage: 99.5,
+                    security_level: 'medium',
+                    ease_of_use: 'excellent'
+                },
+                {
+                    id: 6,
+                    name: 'PhonePe',
+                    description: 'UPI-based payment app',
+                    transaction_fee: 0,
+                    fee_type: 'fixed',
+                    min_fee: 0,
+                    max_fee: 0,
+                    transaction_speed: 'instant',
+                    speed_value: 1,
+                    availability_percentage: 99.8,
+                    security_level: 'high',
+                    ease_of_use: 'excellent'
+                },
+                {
+                    id: 7,
+                    name: 'Google Pay',
+                    description: 'Google\'s UPI payment solution',
+                    transaction_fee: 0,
+                    fee_type: 'fixed',
+                    min_fee: 0,
+                    max_fee: 0,
+                    transaction_speed: 'instant',
+                    speed_value: 1,
+                    availability_percentage: 99.9,
+                    security_level: 'high',
+                    ease_of_use: 'excellent'
+                },
+                {
+                    id: 8,
+                    name: 'Amazon Pay',
+                    description: 'Amazon\'s digital payment solution',
+                    transaction_fee: 0,
+                    fee_type: 'fixed',
+                    min_fee: 0,
+                    max_fee: 0,
+                    transaction_speed: 'instant',
+                    speed_value: 1,
+                    availability_percentage: 99.7,
+                    security_level: 'high',
+                    ease_of_use: 'excellent'
+                }
+            ];
+        }
+    </script>
+    
+    <style>
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-low {
+            background: var(--danger-color);
+            color: white;
+        }
+        
+        .badge-medium {
+            background: var(--warning-color);
+            color: white;
+        }
+        
+        .badge-high {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .badge-very_high {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .badge-excellent {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .badge-good {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .badge-fair {
+            background: var(--warning-color);
+            color: white;
+        }
+        
+        .badge-poor {
+            background: var(--danger-color);
+            color: white;
+        }
+        
+        .badge-success {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .badge-secure {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .badge-moderate {
+            background: var(--warning-color);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                flex: 1;
+                min-width: 120px;
+                text-align: center;
+            }
+            
+            .export-options {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media print {
+            .navbar,
+            .footer,
+            .tab-buttons,
+            .export-options {
+                display: none;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .card {
+                border: 1px solid #ccc;
+                break-inside: avoid;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</body>
+</html>
