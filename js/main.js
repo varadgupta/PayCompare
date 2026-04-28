@@ -311,10 +311,15 @@ async function loadPaymentMethods() {
         if (response.ok) {
             paymentMethods = await response.json();
             updatePaymentMethodCards();
+        } else {
+            // Use sample data if API returns error
+            console.log('API not available, using sample data');
+            paymentMethods = getSamplePaymentMethods();
+            updatePaymentMethodCards();
         }
     } catch (error) {
-        console.error('Error loading payment methods:', error);
-        // Use sample data if API fails
+        console.log('API not available, using sample data');
+        // Use sample data if API fails (expected when running on Python server)
         paymentMethods = getSamplePaymentMethods();
         updatePaymentMethodCards();
     }
